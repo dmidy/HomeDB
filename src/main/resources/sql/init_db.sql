@@ -1,0 +1,28 @@
+CREATE TABLE worker (
+    ID INT PRIMARY KEY,
+    Name VARCHAR(1000) NOT NULL CHECK (LENGTH(Name) >= 2 AND LENGTH(Name) <= 1000),
+    Birthday DATE CHECK (EXTRACT(YEAR FROM Birthday) > 1900),
+    Level VARCHAR(10) NOT NULL CHECK (Level IN ('Trainee', 'Junior', 'Middle', 'Senior')),
+    Salary INT CHECK (Salary >= 100 AND Salary <= 100000)
+);
+
+CREATE TABLE client (
+    ID INT PRIMARY KEY,
+    Name VARCHAR(1000) NOT NULL CHECK (LENGTH(Name) >= 2 AND LENGTH(Name) <= 1000)
+);
+
+CREATE TABLE project (
+    ID INT PRIMARY KEY,
+    CLIENT_ID INT,
+    START_DATE DATE,
+    FINISH_DATE DATE,
+    FOREIGN KEY (CLIENT_ID) REFERENCES client(ID)
+);
+
+CREATE TABLE project_worker (
+    PROJECT_ID INT,
+    WORKER_ID INT,
+    PRIMARY KEY (PROJECT_ID, WORKER_ID),
+    FOREIGN KEY (PROJECT_ID) REFERENCES project(ID),
+    FOREIGN KEY (WORKER_ID) REFERENCES worker(ID)
+);
